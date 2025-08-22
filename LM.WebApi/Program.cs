@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<LMDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("HadiHome"), options =>
+builder.Services.AddDbContext<LMDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LMDb"), options =>
 {
     options.MigrationsAssembly(Assembly.GetAssembly(typeof(LMDbContext))!.GetName().Name);
 }));
