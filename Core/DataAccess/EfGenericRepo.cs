@@ -22,14 +22,14 @@ namespace Core.DataAccess
             _dbSet = Context.Set<TEntity>();
         }
 
-        public Task AddAsync(TEntity entity)
+        public async Task AddAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+             await _dbSet.AddAsync(entity);
         }
 
-        public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> filter = null)
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> filter = null)
         {
-            throw new NotImplementedException();
+            return await _dbSet.AnyAsync(filter);
         }
 
         public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
@@ -46,12 +46,12 @@ namespace Core.DataAccess
 
         public void Remove(TEntity entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Remove(entity);
         }
 
         public void Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Update(entity);
         }
     }
 }

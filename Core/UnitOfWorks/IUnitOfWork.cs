@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LM.DataAccess
+namespace Core.UnitOfWorks
 {
-    public class DbContext
+    public interface IUnitOfWork
     {
+        Task CommitAsync();
+        void Commit();
     }
 }
