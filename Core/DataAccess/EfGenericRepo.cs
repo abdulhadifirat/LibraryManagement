@@ -16,11 +16,15 @@ namespace Core.DataAccess
         protected readonly TContext Context;
         protected readonly DbSet<TEntity> _dbSet;
 
-        public EfGenericRepo(TContext context, DbSet<TEntity> dbSet)
+
+
+        protected EfGenericRepo(TContext context)
         {
             Context = context;
             _dbSet = Context.Set<TEntity>();
         }
+
+
 
         public async Task AddAsync(TEntity entity)
         {

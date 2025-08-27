@@ -17,4 +17,12 @@ public class EfBookRepo : EfGenericRepo<Book, LMDbContext>, IBookRepo
     }
 }
 
+// Ensure LMDbContext has a public parameterless constructor:
+public sealed class LMDbContext : DbContext
+{
+    public LMDbContext() : base()
+    {
+    }
 
+    // ... existing code ...
+}
