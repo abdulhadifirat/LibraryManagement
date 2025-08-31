@@ -1,0 +1,19 @@
+﻿using Core.Business;
+using Core.Utilities.Results;
+using LM.Entity.Concrete;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LM.Business.Abstract;
+
+public interface ILoanServ : IGenericServ<Loan>
+{
+    Task<IDataResult<IEnumerable<Loan>>> GetLoansByBookIdAsync(Guid userId);
+    Task<IDataResult<IEnumerable<Loan>>> GetLoansByUserIdAsync(Guid userId);
+    Task<IDataResult<IEnumerable<Loan>>> GetActiveLoansAsync(bool isReturned);
+    Task<IDataResult<Loan>> LoanBookAsync(Guid bookId, Guid userId);
+    Task<IDataResult<Loan>> ReturnBookAsync(Guid loanId);
+}
