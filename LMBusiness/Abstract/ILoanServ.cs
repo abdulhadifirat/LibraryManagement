@@ -1,6 +1,7 @@
 ﻿using Core.Business;
 using Core.Utilities.Results;
 using LM.Entity.Concrete;
+using LM.Entity.DTOs.Loan;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LM.Business.Abstract;
 
-public interface ILoanServ : IGenericServ<Loan>
+public interface ILoanServ : IGenericServ<Loan, LoanResponseDto, LoanCreateRequestDto, LoanUpdateRequestDto, LoanDetailResponseDto>
 {
     Task<IDataResult<IEnumerable<Loan>>> GetLoansByBookIdAsync(Guid userId);
     Task<IDataResult<IEnumerable<Loan>>> GetLoansByUserIdAsync(Guid userId);

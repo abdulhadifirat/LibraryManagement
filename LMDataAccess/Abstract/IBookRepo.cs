@@ -6,9 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LM.DataAccess.Abstract
+namespace LM.DataAccess.Abstract;
+
+public interface IBookRepo : IGenericRepo<Book>
 {
-    public interface IBookRepo : IGenericRepo<Book>
-    {
-    }
 }

@@ -1,6 +1,7 @@
 ﻿using Core.Business;
 using Core.Utilities.Results;
 using LM.Entity.Concrete;
+using LM.Entity.DTOs.Book;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LM.Business.Abstract;
 
-public interface IBookServ : IGenericServ<Book>
+public interface IBookServ : IGenericServ<Book, BookResponseDto, BookCreateRequestDto, BookUpdateRequestDto, BookDetailResponseDto>
 {
     Task<IDataResult<IEnumerable<Book>>> GetBooksByAuthorAsync(string author);
     Task<IDataResult<IEnumerable<Book>>> GetBooksByTitleAsync(string title);
