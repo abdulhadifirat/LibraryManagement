@@ -16,6 +16,5 @@ public interface IBookServ : IGenericServ<Book, BookResponseDto, BookCreateReque
     Task<IDataResult<IEnumerable<Book>>> GetBooksByTitleAsync(string title);
     Task<IDataResult<IEnumerable<Book>>> GetAvailableBooksAsync(bool stockStatus);
     Task<IDataResult<IEnumerable<Book>>> GetBooksPublishedAfterAsync(DateTime publishedDate);
-
-
+    Task<IDataResult<BookResponseDto>> AddAsync(BookCreateRequestDto dto);
 }

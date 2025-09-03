@@ -26,9 +26,21 @@ public class UserManager : IUserServ
         _unitOfWork = unitOfWork;
     }
 
-    public Task<IDataResult<UserResponseDto>> AddAsync(UserCreateRequestDto dto)
+    public async Task<IDataResult<UserResponseDto>> AddAsync(UserCreateRequestDto dto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var user = _mapper.Map<User>(dto);
+            await _userRepo.AddAsync(user);
+            await _unitOfWork.CommitAsync();
+            var userResponse = _mapper.Map<UserResponseDto>(user);
+            return new SuccessDataResult<UserResponseDto>(userResponse, "User added successfully.");
+        }
+        catch (Exception e)
+        {
+
+            return new ErrorDataResult<UserResponseDto>(e.Message);
+        }
     }
 
     public Task<IDataResult<IEnumerable<UserResponseDto>>> GetAllAsync()

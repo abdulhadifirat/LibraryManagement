@@ -43,7 +43,7 @@ public class BookManager : IBookServ
 
     public async Task<IDataResult<IEnumerable<BookResponseDto>>> GetAllAsync()
     {
-        await
+        await 
     }
 
     public async Task<IDataResult<IEnumerable<Book>>> GetAvailableBooksAsync(bool stockStatus)
