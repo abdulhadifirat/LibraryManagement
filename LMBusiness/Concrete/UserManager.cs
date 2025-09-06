@@ -34,12 +34,12 @@ public class UserManager : IUserServ
             await _userRepo.AddAsync(user);
             await _unitOfWork.CommitAsync();
             var userResponse = _mapper.Map<UserResponseDto>(user);
-            return new SuccessDataResult<UserResponseDto>(userResponse, "User added successfully.");
+            return (IDataResult<UserResponseDto>)(new SuccesDataResult<UserResponseDto>(userResponse, "User added successfully."));
         }
         catch (Exception e)
         {
 
-            return new ErrorDataResult<UserResponseDto>(e.Message);
+            return (IDataResult<UserResponseDto>)new ErrorDataResult<UserResponseDto>(e.Message);
         }
     }
 

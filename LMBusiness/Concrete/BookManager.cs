@@ -19,65 +19,111 @@ public class BookManager : IBookServ
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
-    public BookManager(IBookRepo bookRepo, IMapper mapper, IUnitOfWork unitOfWork)
+    public Task<IDataResult<BookResponseDto>> AddAsync(BookCreateRequestDto dto)
     {
-        _bookRepo = bookRepo;
-        _mapper = mapper;
-        _unitOfWork = unitOfWork;
+        throw new NotImplementedException();
     }
 
-    public async Task<IDataResult<BookResponseDto>> AddAsync(BookCreateRequestDto dto)
+    public Task<IDataResult<IEnumerable<BookResponseDto>>> GetAllAsync()
     {
-        try
-        {
-            var book = _mapper.Map<Book>(dto);
-            await _bookRepo.AddAsync(book);
-            await _unitOfWork.CommitAsync();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        throw new NotImplementedException();
     }
 
-    public async Task<IDataResult<IEnumerable<BookResponseDto>>> GetAllAsync()
+    public Task<IDataResult<IEnumerable<Book>>> GetAvailableBooksAsync(bool stockStatus)
     {
-        await 
+        throw new NotImplementedException();
     }
 
-    public async Task<IDataResult<IEnumerable<Book>>> GetAvailableBooksAsync(bool stockStatus)
+    public Task<IDataResult<IEnumerable<Book>>> GetBooksByAuthorAsync(string author)
     {
-        await
+        throw new NotImplementedException();
     }
 
-    public async Task<IDataResult<IEnumerable<Book>>> GetBooksByAuthorAsync(string author)
+    public Task<IDataResult<IEnumerable<Book>>> GetBooksByTitleAsync(string title)
     {
-        await
+        throw new NotImplementedException();
     }
 
-    public async Task<IDataResult<IEnumerable<Book>>> GetBooksByTitleAsync(string title)
+    public Task<IDataResult<IEnumerable<Book>>> GetBooksPublishedAfterAsync(DateTime publishedDate)
     {
-        await
+        throw new NotImplementedException();
     }
 
-    public async Task<IDataResult<IEnumerable<Book>>> GetBooksPublishedAfterAsync(DateTime publishedDate)
+    public Task<IDataResult<BookResponseDto>> GetByIdAsync(Guid id)
     {
-        await
+        throw new NotImplementedException();
     }
 
-    public async Task<IDataResult<BookResponseDto>> GetByIdAsync(Guid id)
+    public Task<IResult> RemoveAsync(Guid id)
     {
-        await
+        throw new NotImplementedException();
     }
 
-    public async Task<IResult> RemoveAsync(Guid id)
+    public Task<IResult> UpdateAsync(BookUpdateRequestDto dto)
     {
-        await
+        throw new NotImplementedException();
     }
 
-    public async Task<IResult> UpdateAsync(BookUpdateRequestDto dto)
-    {
-        await
-    }
+    //public BookManager(IBookRepo bookRepo, IMapper mapper, IUnitOfWork unitOfWork)
+    //{
+    //    _bookRepo = bookRepo;
+    //    _mapper = mapper;
+    //    _unitOfWork = unitOfWork;
+    //}
+
+    //public async Task<IDataResult<BookResponseDto>> AddAsync(BookCreateRequestDto dto)
+    //{
+    //    try
+    //    {
+    //        var book = _mapper.Map<Book>(dto);
+    //        await _bookRepo.AddAsync(book);
+    //        await _unitOfWork.CommitAsync();
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        Console.WriteLine(e);
+    //        throw;
+    //    }
+    //}
+
+    //public async Task<IDataResult<IEnumerable<BookResponseDto>>> GetAllAsync()
+    //{
+    //    return Task.FromResult( new BookResponseDto());
+
+    //}
+
+    //public async Task<IDataResult<IEnumerable<Book>>> GetAvailableBooksAsync(bool stockStatus)
+    //{
+    //    await
+    //}
+
+    //public async Task<IDataResult<IEnumerable<Book>>> GetBooksByAuthorAsync(string author)
+    //{
+    //    await
+    //}
+
+    //public async Task<IDataResult<IEnumerable<Book>>> GetBooksByTitleAsync(string title)
+    //{
+    //    await
+    //}
+
+    //public async Task<IDataResult<IEnumerable<Book>>> GetBooksPublishedAfterAsync(DateTime publishedDate)
+    //{
+    //    await
+    //}
+
+    //public async Task<IDataResult<BookResponseDto>> GetByIdAsync(Guid id)
+    //{
+    //    await
+    //}
+
+    //public async Task<IResult> RemoveAsync(Guid id)
+    //{
+    //    await
+    //}
+
+    //public async Task<IResult> UpdateAsync(BookUpdateRequestDto dto)
+    //{
+    //    await
+    //}
 }

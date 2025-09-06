@@ -16,8 +16,16 @@ namespace LM.DataAccess.Configurations
             builder.Property(l => l.LoanDate).IsRequired();
             builder.Property(l => l.ReturnDate).IsRequired(false);
             builder.Property(l => l.IsReturned).IsRequired().HasDefaultValue(false);
+            builder.HasOne(l => l.Book)
+        .WithMany(b => b.Loans)
+        .HasForeignKey(l => l.BookId)
+        .HasPrincipalKey(b => b.Id);
 
-
+            builder.Property(l => l.IsReturned).IsRequired().HasDefaultValue(false);
+            builder.HasOne(l => l.User)
+        .WithMany(b => b.Loans)
+        .HasForeignKey(l => l.UserId)
+        .HasPrincipalKey(b => b.Id);
         }
     }
 

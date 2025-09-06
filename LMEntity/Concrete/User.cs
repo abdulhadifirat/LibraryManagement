@@ -9,8 +9,10 @@ namespace LM.Entity.Concrete
 {
     public sealed class User : BaseEntity
     {
+        public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
+        public ICollection<Loan> Loans { get; set; }
     }
 }

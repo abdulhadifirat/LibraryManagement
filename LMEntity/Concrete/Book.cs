@@ -9,13 +9,15 @@ namespace LM.Entity.Concrete
 {
     public sealed class Book : BaseEntity
     {
+        public Guid Id { get; set; }
         public string Author { get; set; }
         public string Title { get; set; }
         public bool StockStatus { get; set; }= true;
         public DateTime PublishedDate { get; set; }
         public string Description { get; set; }
-       
+        public ICollection<Loan> Loans { get; set; }
 
-      
+
+
     }
 }
