@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Core.Business;
 
-public interface IGenericServ<TEntity, TResponse, TCreate, TUpdate, TDetail > where TEntity : BaseEntity, new()
+public interface IGenericServ<TEntity, TResponse, TCreate, TUpdate, TDetail > where TEntity : IEntity, new()
     where TResponse : class, IResponseDto
     where TCreate : class, ICreateDto 
     where TUpdate : class, IUpdateDto 

@@ -5,6 +5,7 @@ using LM.Business.Abstract;
 using LM.DataAccess.Abstract;
 using LM.Entity.Concrete;
 using LM.Entity.DTOs.User;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,38 +44,135 @@ public class UserManager : IUserServ
         }
     }
 
-    public Task<IDataResult<IEnumerable<UserResponseDto>>> GetAllAsync()
+    public async Task<IDataResult<IEnumerable<UserResponseDto>>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        try
+        {
+            var user = await _userRepo.GetAll().ToListAsync();
+            if (user == null)
+            {
+                return (IDataResult<IEnumerable<UserResponseDto>>)new ErrorDataResult<IEnumerable<UserResponseDto>>("No users found.");
+            }
+            var userResponses = _mapper.Map<IEnumerable<UserResponseDto>>(user);
+            return (IDataResult<IEnumerable<UserResponseDto>>)new SuccesDataResult<IEnumerable<UserResponseDto>>(userResponses);
+        }
+        catch (Exception)
+        {
+
+            return (IDataResult<IEnumerable<UserResponseDto>>)new ErrorDataResult<IEnumerable<UserResponseDto>>("An error occurred while retrieving users.");
+        }
     }
 
-    public Task<IDataResult<UserResponseDto>> GetByIdAsync(Guid id)
+    public async Task<IDataResult<UserResponseDto>> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var user = _userRepo.GetAll(u => u.Id == id);
+            if (user == null)
+            {
+                return (IDataResult<UserResponseDto>)new ErrorDataResult<UserResponseDto>("User not found.");
+            }
+            var userResponse = _mapper.Map<UserResponseDto>(user);
+            return (IDataResult<UserResponseDto>)new SuccesDataResult<UserResponseDto>(userResponse);
+        }
+        catch (Exception)
+        {
+
+            return (IDataResult<UserResponseDto>)new ErrorDataResult<UserResponseDto>("An error occurred while retrieving the user.");
+        }
+        
     }
 
-    public Task<IDataResult<User>> GetUserByPhoneNumberAsync(string phoneNumber)
+    public async Task<IDataResult<User>> GetUserByPhoneNumberAsync(string phoneNumber)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var user = await _userRepo.GetAsync(u => u.PhoneNumber == phoneNumber);
+            if (user == null)
+            {
+                return (IDataResult<User>)new ErrorDataResult<User>("User not found.");
+            }
+
+            return (IDataResult<User>)new SuccesDataResult<User>(user);
+        }
+        catch (Exception)
+        {
+            return (IDataResult<User>)new ErrorDataResult<User>("An error occurred while retrieving the user.");
+        }
     }
 
-    public Task<IDataResult<IEnumerable<User>>> GetUsersByFirstNameAsync(string firstName)
+    public async Task<IDataResult<IEnumerable<User>>> GetUsersByFirstNameAsync(string firstName)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var user = await _userRepo.GetAsync(u => u.FirstName == firstName);
+            if (user == null)
+            {
+                return (IDataResult<IEnumerable<User>>)new ErrorDataResult<User>("User not found.");
+            }
+
+            return (IDataResult<IEnumerable<User>>)new SuccesDataResult<User>(user);
+        }
+        catch (Exception)
+        {
+            return (IDataResult<IEnumerable<User>>)new ErrorDataResult<User>("An error occurred while retrieving the user.");
+        }
     }
 
-    public Task<IDataResult<IEnumerable<User>>> GetUsersByLastNameAsync(string lastName)
+    public async Task<IDataResult<IEnumerable<User>>> GetUsersByLastNameAsync(string lastName)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var user = await _userRepo.GetAsync(u => u.LastName == lastName);
+            if (user == null)
+            {
+                return (IDataResult<IEnumerable<User>>)new ErrorDataResult<User>("User not found.");
+            }
+
+            return (IDataResult<IEnumerable<User>>)new SuccesDataResult<User>(user);
+        }
+        catch (Exception)
+        {
+            return (IDataResult<IEnumerable<User>>)new ErrorDataResult<User>("An error occurred while retrieving the user.");
+        }
     }
 
-    public Task<IResult> RemoveAsync(Guid id)
+    public async Task<IResult> RemoveAsync(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var user =  _userRepo.GetAsync(u => u.Id == id).Result;
+            if (user == null)
+            {
+                return new ErrorResult("User not found.");
+            }
+            user.UpdatedAt = DateTime.Now;
+            user.IsActive = false;
+            _userRepo.Update(user);
+           await _unitOfWork.CommitAsync();
+            return new SuccesResult("User removed successfully.");
+        }
+        catch (Exception)
+        {
+
+            return new ErrorResult("An error occurred while removing the user.");
+        }
     }
 
-    public Task<IResult> UpdateAsync(UserUpdateRequestDto dto)
+    public async Task<IResult> UpdateAsync(UserUpdateRequestDto dto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var user = _mapper.Map<User>(dto);
+            user.UpdatedAt = DateTime.Now;
+            _userRepo.Update(user);
+             await _unitOfWork.CommitAsync();
+            return new SuccesResult("User updated successfully.");
+        }
+        catch (Exception)
+        {
+
+            return new ErrorResult("An error occurred while updating the user.");
+        }
     }
 }

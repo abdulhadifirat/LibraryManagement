@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Core.UnitOfWorks;
 using LM.DataAccess.Abstract;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace LM.Business.Concrete;
 
@@ -19,111 +21,139 @@ public class BookManager : IBookServ
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
-    public Task<IDataResult<BookResponseDto>> AddAsync(BookCreateRequestDto dto)
+    public async Task<IDataResult<BookResponseDto>> AddAsync(BookCreateRequestDto dto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var book = _mapper.Map<Book>(dto);
+            await _bookRepo.AddAsync(book);
+            await _unitOfWork.CommitAsync();
+            var bookResponse = _mapper.Map<BookResponseDto>(book);
+            return (IDataResult<BookResponseDto>)(new SuccesDataResult<BookResponseDto>(bookResponse, "Book added successfully."));
+        }
+        catch (Exception e)
+        {
+            return (IDataResult<BookResponseDto>)new ErrorDataResult<BookResponseDto>(e.Message);
+        }
     }
 
-    public Task<IDataResult<IEnumerable<BookResponseDto>>> GetAllAsync()
+    public async Task<IDataResult<IEnumerable<BookResponseDto>>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        try
+        {
+            var books = await _bookRepo.GetAll().ToListAsync();
+            if (books == null)
+            {
+                return (IDataResult<IEnumerable<BookResponseDto>>)new ErrorDataResult<IEnumerable<BookResponseDto>>("No books found.");
+            }
+            var bookResponses = _mapper.Map<IEnumerable<BookResponseDto>>(books);
+            return (IDataResult<IEnumerable<BookResponseDto>>)new SuccesDataResult<IEnumerable<BookResponseDto>>(bookResponses);
+        }
+        catch (Exception)
+        {
+
+            return (IDataResult<IEnumerable<BookResponseDto>>)new ErrorDataResult<IEnumerable<BookResponseDto>>("An error occurred while retrieving books.");
+        }
     }
 
-    public Task<IDataResult<IEnumerable<Book>>> GetAvailableBooksAsync(bool stockStatus)
+    public async Task<IDataResult<IEnumerable<Book>>> GetAvailableBooksAsync(bool stockStatus)
     {
-        throw new NotImplementedException();
+        try
+        {
+            // Fix: Use '==' for comparison, not '=' for assignment
+            var books = await _bookRepo.GetAll(b => b.IsActive == true).ToListAsync();
+            if (books == null)
+            {
+                return (IDataResult<IEnumerable<Book>>)new ErrorDataResult<IEnumerable<Book>>("No available books found.");
+            }
+            var bookResponses = _mapper.Map<IEnumerable<Book>>(books);
+
+            return (IDataResult<IEnumerable<Book>>)new SuccesDataResult<IEnumerable<Book>>(books);
+        }
+        catch (Exception)
+        {
+            return (IDataResult<IEnumerable<Book>>)new ErrorDataResult<IEnumerable<Book>>("An error occurred while retrieving available books.");
+        }
     }
 
-    public Task<IDataResult<IEnumerable<Book>>> GetBooksByAuthorAsync(string author)
+  
+
+    public async Task<IDataResult<BookResponseDto>> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var book = await _bookRepo.GetAsync(b => b.Id == id);
+            if (book == null)
+            {
+                return (IDataResult<BookResponseDto>)  new ErrorDataResult<BookResponseDto>("Book not found.");
+            }
+            var bookResponse = _mapper.Map<BookResponseDto>(book);
+            return (IDataResult<BookResponseDto>) new SuccesDataResult<BookResponseDto>(bookResponse);
+
+        }
+        catch (Exception)
+        {
+
+           return (IDataResult<BookResponseDto>) new ErrorDataResult<BookResponseDto>("An error occurred while retrieving the book.");
+        }
     }
 
-    public Task<IDataResult<IEnumerable<Book>>> GetBooksByTitleAsync(string title)
+    public async Task<IResult> RemoveAsync(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var book = await _bookRepo.GetAsync(b => b.Id == id);
+            if (book == null)
+            {
+                return new ErrorResult("Book not found.");
+            }
+            book.UpdatedAt = DateTime.Now;
+            book.IsActive=false;
+            book.IsDeleted=true;
+            _bookRepo.Update(book);
+            await _unitOfWork.CommitAsync();
+            return new SuccesResult("Book removed successfully.");
+        }
+        catch (Exception)
+        {
+
+            return new ErrorResult("An error occurred while removing the book.");
+        }
     }
 
-    public Task<IDataResult<IEnumerable<Book>>> GetBooksPublishedAfterAsync(DateTime publishedDate)
+    public async Task<IResult> UpdateAsync(BookUpdateRequestDto dto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var book = _mapper.Map<Book>(dto);
+            book.UpdatedAt = DateTime.Now;
+            _bookRepo.Update(book);
+            await _unitOfWork.CommitAsync();
+            return new SuccesResult("Book updated successfully.");
+        }
+        catch (Exception)
+        {
+
+            return new ErrorResult("An error occurred while updating the book.");
+        }
+
+        
     }
 
-    public Task<IDataResult<BookResponseDto>> GetByIdAsync(Guid id)
+    public async Task<IDataResult<IEnumerable<Book>>> GetBooksById(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var books = await _bookRepo.GetAll(b => b.Id == id).ToListAsync();
+            if (books == null || !books.Any())
+            {
+                return (IDataResult<IEnumerable<Book>>)new ErrorDataResult<IEnumerable<Book>>("No books found with the specified ID.");
+            }
+            return (IDataResult<IEnumerable<Book>>)new SuccesDataResult<IEnumerable<Book>>(books);
+        }
+        catch (Exception)
+        {
+            return (IDataResult<IEnumerable<Book>>)new ErrorDataResult<IEnumerable<Book>>("An error occurred while retrieving books by ID.");
+        }
     }
-
-    public Task<IResult> RemoveAsync(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IResult> UpdateAsync(BookUpdateRequestDto dto)
-    {
-        throw new NotImplementedException();
-    }
-
-    //public BookManager(IBookRepo bookRepo, IMapper mapper, IUnitOfWork unitOfWork)
-    //{
-    //    _bookRepo = bookRepo;
-    //    _mapper = mapper;
-    //    _unitOfWork = unitOfWork;
-    //}
-
-    //public async Task<IDataResult<BookResponseDto>> AddAsync(BookCreateRequestDto dto)
-    //{
-    //    try
-    //    {
-    //        var book = _mapper.Map<Book>(dto);
-    //        await _bookRepo.AddAsync(book);
-    //        await _unitOfWork.CommitAsync();
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        Console.WriteLine(e);
-    //        throw;
-    //    }
-    //}
-
-    //public async Task<IDataResult<IEnumerable<BookResponseDto>>> GetAllAsync()
-    //{
-    //    return Task.FromResult( new BookResponseDto());
-
-    //}
-
-    //public async Task<IDataResult<IEnumerable<Book>>> GetAvailableBooksAsync(bool stockStatus)
-    //{
-    //    await
-    //}
-
-    //public async Task<IDataResult<IEnumerable<Book>>> GetBooksByAuthorAsync(string author)
-    //{
-    //    await
-    //}
-
-    //public async Task<IDataResult<IEnumerable<Book>>> GetBooksByTitleAsync(string title)
-    //{
-    //    await
-    //}
-
-    //public async Task<IDataResult<IEnumerable<Book>>> GetBooksPublishedAfterAsync(DateTime publishedDate)
-    //{
-    //    await
-    //}
-
-    //public async Task<IDataResult<BookResponseDto>> GetByIdAsync(Guid id)
-    //{
-    //    await
-    //}
-
-    //public async Task<IResult> RemoveAsync(Guid id)
-    //{
-    //    await
-    //}
-
-    //public async Task<IResult> UpdateAsync(BookUpdateRequestDto dto)
-    //{
-    //    await
-    //}
 }

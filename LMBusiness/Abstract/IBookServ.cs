@@ -12,9 +12,9 @@ namespace LM.Business.Abstract;
 
 public interface IBookServ : IGenericServ<Book, BookResponseDto, BookCreateRequestDto, BookUpdateRequestDto, BookDetailResponseDto>
 {
-    Task<IDataResult<IEnumerable<Book>>> GetBooksByAuthorAsync(string author);
-    Task<IDataResult<IEnumerable<Book>>> GetBooksByTitleAsync(string title);
+   
     Task<IDataResult<IEnumerable<Book>>> GetAvailableBooksAsync(bool stockStatus);
-    Task<IDataResult<IEnumerable<Book>>> GetBooksPublishedAfterAsync(DateTime publishedDate);
+
+    Task<IDataResult<IEnumerable<Book>>> GetBooksById(Guid id);
     Task<IDataResult<BookResponseDto>> AddAsync(BookCreateRequestDto dto);
 }
