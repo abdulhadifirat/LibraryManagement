@@ -67,7 +67,7 @@ public class UserManager : IUserServ
     {
         try
         {
-            var user = _userRepo.GetAll(u => u.Id == id);
+            var user = await _userRepo.GetAsync(u => u.Id == id);
             if (user == null)
             {
                 return (IDataResult<UserResponseDto>)new ErrorDataResult<UserResponseDto>("User not found.");
@@ -77,10 +77,8 @@ public class UserManager : IUserServ
         }
         catch (Exception)
         {
-
             return (IDataResult<UserResponseDto>)new ErrorDataResult<UserResponseDto>("An error occurred while retrieving the user.");
         }
-        
     }
 
     public async Task<IDataResult<User>> GetUserByPhoneNumberAsync(string phoneNumber)

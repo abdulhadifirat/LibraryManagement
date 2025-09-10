@@ -16,5 +16,5 @@ public interface ILoanServ : IGenericServ<Loan, LoanResponseDto, LoanCreateReque
     Task<IDataResult<IEnumerable<Loan>>> GetLoansByUserIdAsync(Guid userId);
     Task<IDataResult<IEnumerable<Loan>>> GetActiveLoansAsync(bool isReturned);
     Task<IDataResult<Loan>> LoanBookAsync(Guid bookId, Guid userId);
-    Task<IDataResult<Loan>> ReturnBookAsync(Guid loanId);
+    
 }
