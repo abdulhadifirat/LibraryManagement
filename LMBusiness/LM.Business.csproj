@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\LMDataAccess\LM.DataAccess.csproj" />
     <ProjectReference Include="..\LMEntity\LM.Entity.csproj" />
   </ItemGroup>

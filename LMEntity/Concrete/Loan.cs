@@ -16,7 +16,6 @@ namespace LM.Entity.Concrete
         public DateTime? ReturnDate { get; set; }
         public bool IsNotReturned { get; set; } = false;
         public DateTime DueDate { get; set; }
-
         public Book Book { get; set; }
         public User User { get; set; }
     }

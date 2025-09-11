@@ -48,7 +48,7 @@ public class LoanManager : ILoanServ
     {
         try
         {
-            var loan = await _loanRepo.GetAll(l => l.IsNotReturned == isNotReturned).ToListAsync();
+            var loan = await _loanRepo.GetAll(l => l.IsNotReturned == isNotReturned).OrderByDescending(l => l.LoanDate).ToListAsync();
             if (loan == null)
             {
                 return (IDataResult<IEnumerable<Loan>>)new ErrorDataResult<IEnumerable<Loan>>("All loans returned.");
@@ -66,7 +66,7 @@ public class LoanManager : ILoanServ
     {
         try
         {
-            var loan = await _loanRepo.GetAll().ToListAsync();
+            var loan = await _loanRepo.GetAll(l=>!l.IsDeleted).OrderByDescending(l=>l.LoanDate) .ToListAsync();
             if (loan == null)
             {
                 return (IDataResult<IEnumerable<LoanResponseDto>>)new ErrorDataResult<IEnumerable<LoanResponseDto>>("No loans found.");
@@ -104,7 +104,7 @@ public class LoanManager : ILoanServ
     {
         try
         {
-            var loan = await _loanRepo.GetAll(l => l.BookId == bookId).ToListAsync();
+            var loan = await _loanRepo.GetAll(l => l.BookId == bookId).OrderByDescending(l => l.LoanDate).ToListAsync();
             if (loan == null)
             {
                 return (IDataResult<IEnumerable<Loan>>)new ErrorDataResult<IEnumerable<Loan>>("No loans found for the specified user.");
