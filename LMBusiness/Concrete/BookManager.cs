@@ -21,6 +21,13 @@ public class BookManager : IBookServ
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
 
+    public BookManager(IBookRepo bookRepo, IMapper mapper, IUnitOfWork unitOfWork)
+    {
+        _bookRepo = bookRepo;
+        _mapper = mapper;
+        _unitOfWork = unitOfWork;
+    }
+
     public async Task<IDataResult<BookResponseDto>> AddAsync(BookCreateRequestDto dto)
     {
         try

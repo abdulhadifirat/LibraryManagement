@@ -1,10 +1,13 @@
 ﻿using Autofac;
+using AutoMapper;
+using AutoMapper.Execution;
 using Core.UnitOfWorks;
 using LM.Business.Abstract;
 using LM.Business.Concrete;
 using LM.DataAccess.Abstract;
 using LM.DataAccess.Concrete.EntityFramework;
 using LM.DataAccess.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,5 +30,17 @@ public class AutofacBusinessModule :Module
         builder.RegisterType<LoanManager>().As<ILoanServ>();
 
         builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+        builder.RegisterType<Mapper>().As<IMapper>();
+
+        builder.Register(c =>
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<LMDbContext>();
+            //optionsBuilder.UseSqlServer("ConnectionString"); // connection string ekle
+            return new LMDbContext(optionsBuilder.Options);
+        }).AsSelf()
+  .InstancePerLifetimeScope();
+       
+
+   
     }
 }

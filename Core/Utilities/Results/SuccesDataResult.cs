@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Utilities.Results;
 
-public class SuccesDataResult<T> : DataResult<T>
+public class SuccesDataResult<T>   : DataResult<T> where T : class
 {
     public SuccesDataResult(T data) : base(data, true)
     {

@@ -8,17 +8,20 @@ namespace Core.Utilities.Results;
 
 public class ErrorDataResult<T> : IDataResult<T>
 {
-    public T Data => throw new NotImplementedException();
+    public T Data { get; set; }
 
-    public bool Success => throw new NotImplementedException();
+    public bool Success { get; }
 
-    public string Message => throw new NotImplementedException();
+    public string Message { get; }
+    public ErrorDataResult(string message)
+    {
+    }
 }
 
 //public class ErrorDataResult<T> : DataResult<T>
-    //public ErrorDataResult(T data, bool success) : base(data, false)
-    //{
-    //}
+//public ErrorDataResult(T data, bool success) : base(data, false)
+//{
+//}
 
 //public ErrorDataResult(T data, bool success, string message) : base(data, false, message)
 //{
@@ -28,7 +31,5 @@ public class ErrorDataResult<T> : IDataResult<T>
 //{
 //}
 
-//public ErrorDataResult(string message) : base(default, false, message)
-//{
-//}
+
 

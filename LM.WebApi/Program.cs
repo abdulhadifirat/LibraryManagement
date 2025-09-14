@@ -18,7 +18,7 @@ builder.Services.AddCors(option => option.AddPolicy("AllowAllOrigins", builder =
 builder.Services.AddControllers();
 builder.Services.AddDbContext<LMDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("LMDb"), options =>
 {
-    options.MigrationsAssembly(Assembly.GetAssembly(typeof(LMDbContext))!.GetName().Name);
+    options.MigrationsAssembly(System.Reflection.Assembly.GetAssembly(typeof(LMDbContext))!.GetName().Name);
 }));
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).ConfigureContainer<ContainerBuilder>(
@@ -27,7 +27,12 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory()).Conf
         builder.RegisterModule(new AutofacBusinessModule());
     });
 
-builder.Services.AddAutoMapper(typeof(MapProfile).Assembly);
+// Program.cs veya Startup.cs
+builder.Services.AddAutoMapper(x=> { x.AddProfile<MapProfile>(); });
+//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+
+//builder.Services.AddAutoMapper(typeof(MapProfile).Assembly);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

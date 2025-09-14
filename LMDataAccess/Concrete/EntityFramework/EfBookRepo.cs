@@ -1,7 +1,6 @@
 ﻿using Core.DataAccess;
 using LM.DataAccess.Abstract;
 using LM.Entity.Concrete;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +14,5 @@ public class EfBookRepo : EfGenericRepo<Book, LMDbContext>, IBookRepo
     public EfBookRepo(LMDbContext context) : base(context)
     {
     }
-}
-
-// Ensure LMDbContext has a public parameterless constructor:
-public sealed class LMDbContext : DbContext
-{
-    public LMDbContext() : base()
-    {
-    }
-
-    // ... existing code ...
+  
 }

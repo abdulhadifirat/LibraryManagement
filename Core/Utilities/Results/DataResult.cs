@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.Utilities.Results;
 
-public class DataResult<T> : Result, IDataResult
+public class DataResult<T> : Result, IDataResult<T>
+     where T : class
 {
     public DataResult(T data, bool success) : base(success)
     {
@@ -18,4 +19,8 @@ public class DataResult<T> : Result, IDataResult
         Data = data;
     }
     T Data { get; }
+
+    T IDataResult<T>.Data => Data;
+
+ 
 }

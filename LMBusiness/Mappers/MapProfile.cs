@@ -29,6 +29,8 @@ public class MapProfile : Profile
         CreateMap<Loan, LoanDetailResponseDto>();
         CreateMap<LoanCreateRequestDto, Loan>();
         CreateMap<LoanUpdateRequestDto, Loan>();
+
+
         
     }
 }
