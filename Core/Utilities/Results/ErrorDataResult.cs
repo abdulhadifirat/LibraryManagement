@@ -6,30 +6,16 @@ using System.Threading.Tasks;
 
 namespace Core.Utilities.Results;
 
-public class ErrorDataResult<T> : IDataResult<T>
+public class ErrorDataResult<T> : DataResult<T> where T : class
 {
-    public T Data { get; set; }
+    public ErrorDataResult(T data, string message) : base(data, false, message) { }
 
-    public bool Success { get; }
+    public ErrorDataResult(string message) : base(default, false, message) { }
 
-    public string Message { get; }
-    public ErrorDataResult(string message)
-    {
-    }
+    public ErrorDataResult() : base(default, false, null) { }
 }
 
-//public class ErrorDataResult<T> : DataResult<T>
-//public ErrorDataResult(T data, bool success) : base(data, false)
-//{
-//}
 
-//public ErrorDataResult(T data, bool success, string message) : base(data, false, message)
-//{
-//}
-
-//public ErrorDataResult() : base(default, false)
-//{
-//}
 
 
 

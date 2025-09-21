@@ -12,6 +12,6 @@ public sealed record BookResponseDto(
     string Author,
     string Title,
     bool StockStatus,
-    DateTime PublishedDate,
+    string PublishedDate,
     string Description
     ) : IResponseDto;

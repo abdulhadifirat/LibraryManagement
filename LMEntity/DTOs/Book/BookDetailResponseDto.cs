@@ -7,7 +7,7 @@ public sealed record BookDetailResponseDto(
     string Author,
     string Title,
     bool StockStatus,
-    DateTime PublishedDate,
+    string PublishedDate,
     string Description,
     DateTime CreatedAt,
     DateTime UpdatedAt

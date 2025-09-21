@@ -7,6 +7,7 @@ public sealed record BookUpdateRequestDto(
     string Author,
     string Title,
     bool StockStatus,
+    string PublishedDate,
     DateTime UpdatedAt
     ) : IUpdateDto;
 

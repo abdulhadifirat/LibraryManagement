@@ -13,8 +13,9 @@ namespace LM.Entity.Concrete
         public string Author { get; set; }
         public string Title { get; set; }
         public bool StockStatus { get; set; }= true;
-        public DateTime PublishedDate { get; set; }
+        public string PublishedDate { get; set; }
         public string Description { get; set; }
+        public DateTime CreatedAt { get; set; }
         public ICollection<Loan> Loans { get; set; }
 
 

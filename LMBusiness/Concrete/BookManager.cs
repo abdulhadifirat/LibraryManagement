@@ -33,14 +33,17 @@ public class BookManager : IBookServ
         try
         {
             var book = _mapper.Map<Book>(dto);
+            book.CreatedAt = DateTime.UtcNow; 
+
             await _bookRepo.AddAsync(book);
             await _unitOfWork.CommitAsync();
+
             var bookResponse = _mapper.Map<BookResponseDto>(book);
-            return (IDataResult<BookResponseDto>)(new SuccesDataResult<BookResponseDto>(bookResponse, "Book added successfully."));
+            return new SuccesDataResult<BookResponseDto>(bookResponse, "Book added successfully.");
         }
         catch (Exception e)
         {
-            return (IDataResult<BookResponseDto>)new ErrorDataResult<BookResponseDto>(e.Message);
+            return new ErrorDataResult<BookResponseDto>(e.Message);
         }
     }
 
@@ -51,15 +54,15 @@ public class BookManager : IBookServ
             var books = await _bookRepo.GetAll().ToListAsync();
             if (books == null)
             {
-                return (IDataResult<IEnumerable<BookResponseDto>>)new ErrorDataResult<IEnumerable<BookResponseDto>>("No books found.");
+                return new ErrorDataResult<IEnumerable<BookResponseDto>>("No books found.");
             }
             var bookResponses = _mapper.Map<IEnumerable<BookResponseDto>>(books);
-            return (IDataResult<IEnumerable<BookResponseDto>>)new SuccesDataResult<IEnumerable<BookResponseDto>>(bookResponses);
+            return new SuccesDataResult<IEnumerable<BookResponseDto>>(bookResponses);
         }
         catch (Exception)
         {
 
-            return (IDataResult<IEnumerable<BookResponseDto>>)new ErrorDataResult<IEnumerable<BookResponseDto>>("An error occurred while retrieving books.");
+            return new ErrorDataResult<IEnumerable<BookResponseDto>>("An error occurred while retrieving books.");
         }
     }
 
@@ -162,5 +165,10 @@ public class BookManager : IBookServ
         {
             return (IDataResult<IEnumerable<Book>>)new ErrorDataResult<IEnumerable<Book>>("An error occurred while retrieving books by ID.");
         }
+    }
+
+    public Task SaveChangesAsync()
+    {
+        throw new NotImplementedException();
     }
 }
