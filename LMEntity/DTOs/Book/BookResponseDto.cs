@@ -1,9 +1,6 @@
 ﻿using Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using LM.Entity.Concrete;
+using LM.Entity.DTOs.Loan;
 
 namespace LM.Entity.DTOs.Book;
 
@@ -13,5 +10,7 @@ public sealed record BookResponseDto(
     string Title,
     bool StockStatus,
     string PublishedDate,
-    string Description
-    ) : IResponseDto;
+    string Description,
+    DateTime CreatedAt,
+    ICollection<LoanDto> Loans
+) : IResponseDto;
